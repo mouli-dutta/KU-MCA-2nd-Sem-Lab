@@ -10,3 +10,6 @@ Sorting Algorithms
 1. [Bubble Sort](https://github.com/mouli-dutta/KU-MCA-2nd-Sem-Lab/blob/main/211.%20OOP%20Lab/Sorting%20Algorithms/BubbleSort.cpp)
 2. [Insertion Sort](https://github.com/mouli-dutta/KU-MCA-2nd-Sem-Lab/blob/main/211.%20OOP%20Lab/Sorting%20Algorithms/InsertionSort.cpp)
 3. [Merge Sort](https://github.com/mouli-dutta/KU-MCA-2nd-Sem-Lab/blob/main/211.%20OOP%20Lab/Sorting%20Algorithms/MergeSort.cpp)
+4. [Quick Sort](https://github.com/mouli-dutta/KU-MCA-2nd-Sem-Lab/blob/main/211.%20OOP%20Lab/Sorting%20Algorithms/QuickSort.cpp)
+5. [Radix Sort](https://github.com/mouli-dutta/KU-MCA-2nd-Sem-Lab/blob/main/211.%20OOP%20Lab/Sorting%20Algorithms/RadixSort.cpp)
+6. [Selection Sort](https://github.com/mouli-dutta/KU-MCA-2nd-Sem-Lab/blob/main/211.%20OOP%20Lab/Sorting%20Algorithms/SelectionSort.cpp)
