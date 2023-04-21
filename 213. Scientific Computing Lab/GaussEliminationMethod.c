@@ -43,6 +43,7 @@ void printVector(int size, double vector[size]) {
     puts("|");
 }
 
+// function for backward substitution
 double* backwardSubstitute(int size, double matrix[][size], double vector[size]) {
     double *solutionVector = malloc(size * sizeof(double));
     for(int i = size-1; i >= 0; i--) {
