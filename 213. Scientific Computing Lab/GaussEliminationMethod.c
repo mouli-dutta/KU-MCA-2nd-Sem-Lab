@@ -43,6 +43,12 @@ void printVector(int size, double vector[size]) {
     puts("|");
 }
 
+void swap(double *a, double *b) {
+    double temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
 // function for backward substitution
 double* backwardSubstitute(int size, double matrix[][size], double vector[size]) {
     double *solutionVector = malloc(size * sizeof(double));
@@ -72,19 +78,11 @@ void solve(int size, double matrix[][size], double vector[size]) {
 
         // swap current row with max row
         for (int j = i; j < size; j++) {
-            double tmp = matrix[maxRow][j];
-            matrix[maxRow][j] = matrix[i][j];
-            matrix[i][j] = tmp;
+            swap(&matrix[maxRow][j], &matrix[i][j]);
         }
 
-        //printMatrix(size, matrix);
-
         // swap vecotr row with the max row
-        double v = vector[i];
-        vector[i] = vector[maxRow];
-        vector[maxRow] = v;
-
-        //printVector(size, vector);
+        swap(&vector[i], &vector[maxRow]);
 
         // No solution when matrix is singular
         if(fabs(matrix[i][i]) <= 0.00001) {
