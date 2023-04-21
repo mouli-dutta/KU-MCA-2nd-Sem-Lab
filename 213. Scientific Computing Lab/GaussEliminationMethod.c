@@ -43,6 +43,18 @@ void printVector(int size, double vector[size]) {
     puts("|");
 }
 
+double* backwardSubstitute(int size, double matrix[][size], double vector[size]) {
+    double *solutionVector = malloc(size * sizeof(double));
+    for(int i = size-1; i >= 0; i--) {
+        double sum = 0.0;
+        for(int j = i+1; j < size; j++) {
+            sum += matrix[i][j] * solutionVector[j];
+        }
+        solutionVector[i] = (vector[i]-sum) / matrix[i][i];
+    }
+    return solutionVector;
+}
+
 // Gauss Elimination method
 void solve(int size, double matrix[][size], double vector[size]) {
     
@@ -87,21 +99,19 @@ void solve(int size, double matrix[][size], double vector[size]) {
             // pivoting end
         }
     }
-    
+
     //printMatrix(size, matrix);
 
     // backward substitution
-    double solutionVector[size];
-    for(int i = size-1; i >= 0; i--) {
-        double sum = 0.0;
-        for(int j = i+1; j < size; j++) {
-            sum += matrix[i][j] * solutionVector[j];
-        }
-        solutionVector[i] = (vector[i]-sum) / matrix[i][i];
-    }
+    double *solutionVector = backwardSubstitute(size, matrix, vector);
 
+    // print solution
     printVector(size, solutionVector);
+
+    // free up space
+    free(solutionVector);
 }
+
 
 // driver (main) function
 int main() {
