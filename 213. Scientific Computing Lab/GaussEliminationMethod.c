@@ -61,10 +61,12 @@ void solve(int size, double matrix[][size], double vector[size]) {
     
     for(int i = 0; i < size; i++) {
         int maxRow = i;
-    
+        double maxElement = matrix[maxRow][i];
+
         // loop for finding the max row
         for(int j = i+1; j < size; j++) {
-            if(fabs(matrix[j][i]) > fabs(matrix[maxRow][i]))
+            double currentElement = matrix[j][i];
+            if(fabs(currentElement) > fabs(maxElement))
                 maxRow = j;
         }
 
@@ -82,10 +84,12 @@ void solve(int size, double matrix[][size], double vector[size]) {
         vector[i] = vector[maxRow];
         vector[maxRow] = v;
 
+        //printVector(size, vector);
+
         // No solution when matrix is singular
         if(fabs(matrix[i][i]) <= 0.00001) {
-            printf("Matrix is Singular.\n");
-            exit(0);
+            printf("No solution because Matrix is Singular.\n");
+            exit(1);
         }
 
         // loop for generating the upper triangular matrix
