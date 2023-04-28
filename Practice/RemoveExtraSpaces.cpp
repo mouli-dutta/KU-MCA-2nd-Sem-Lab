@@ -20,8 +20,8 @@ string MyString::modify()
     string res = "";
 
     for(int i = 0; i < len; i++) {
-        if(str[i] != str[i+1]) {
-            res += str[i];
+        if(!(s[i]== ' ' && s[i+1]== ' ')) {
+            res += s[i];
         }
     }
 
