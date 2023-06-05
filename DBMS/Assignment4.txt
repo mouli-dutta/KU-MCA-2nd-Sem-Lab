@@ -323,5 +323,77 @@ mysql> desc Flights;
 +----------+---------------+------+-----+---------+-------+
 7 rows in set (0.00 sec)
 
+mysql> insert into Aircraft values('IA101', 'Indian Airlines', 439.89);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into Aircraft values('SJ102', 'Spice Jet', 657.95);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into Aircraft values('DA103', 'Deccan Airlines', 1150.23);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into Aircraft values('JA104', 'Jet Airways', 1800.56);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into Aircraft values('IA105', 'Indian Airlines', 700.45);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into Aircraft values('SA106', 'Sahara', 2100.23);
+Query OK, 1 row affected (0.11 sec)
+
+mysql> desc Aircraft;
++----------------+---------------+------+-----+---------+-------+
+| Field          | Type          | Null | Key | Default | Extra |
++----------------+---------------+------+-----+---------+-------+
+| aid            | varchar(8)    | NO   | PRI | NULL    |       |
+| aname          | varchar(20)   | YES  |     | NULL    |       |
+| crushing_range | decimal(10,2) | YES  |     | NULL    |       |
++----------------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from Aircraft;
++-------+-----------------+----------------+
+| aid   | aname           | crushing_range |
++-------+-----------------+----------------+
+| DA103 | Deccan Airlines |        1150.23 |
+| IA101 | Indian Airlines |         439.89 |
+| IA105 | Indian Airlines |         700.45 |
+| JA104 | Jet Airways     |        1800.56 |
+| SA106 | Sahara          |        2100.23 |
+| SJ102 | Spice Jet       |         657.95 |
++-------+-----------------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> insert into Employees values('EM101', 'Noorain Aziza', 150000);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into Employees values('EM102', 'Nabanita Saha', 140000);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into Employees values('EM103', 'Mouli Dutta', 160000);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into Employees values('EM104', 'Ammrisha Chowdhury', 170000);
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into Employees values('EM105', 'Maya Murmu', 150000);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into Employees values('EM106', 'Preetha Chakraborty', 180000);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from Employees;
++-------+---------------------+--------+
+| eid   | ename               | salary |
++-------+---------------------+--------+
+| EM101 | Noorain Aziza       | 150000 |
+| EM102 | Nabanita Saha       | 140000 |
+| EM103 | Mouli Dutta         | 160000 |
+| EM104 | Ammrisha Chowdhury  | 170000 |
+| EM105 | Maya Murmu          | 150000 |
+| EM106 | Preetha Chakraborty | 180000 |
++-------+---------------------+--------+
+6 rows in set (0.00 sec)
+
 mysql> 
 
