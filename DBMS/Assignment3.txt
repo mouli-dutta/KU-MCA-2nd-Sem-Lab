@@ -54,8 +54,6 @@ mysql> desc RESERVES;
 +-------+------------+------+-----+---------+-------+
 3 rows in set (0.00 sec)
 
-mysql> insert into SAILOR values(('S1', 'DEF', 8, 38), ('s2', 'ABC', 5, 35), ('s3', 'PQR',6,42),('s4', 'IOU', 6, 58), ('s5', 'MNO', 9, 76), ('s6', 'XYZ', 6, 46));
-ERROR 1136 (21S01): Column count doesn't match value count at row 1
 mysql> insert into SAILOR values('s1', 'DEF', 8, 38);
 Query OK, 1 row affected (0.09 sec)
 
