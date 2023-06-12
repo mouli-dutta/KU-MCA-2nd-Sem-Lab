@@ -1,4 +1,4 @@
-// C program to implement Runge-Kutta method
+// C program to implement Runge-Kutta 2nd order method
 
 #include <stdio.h>
 
