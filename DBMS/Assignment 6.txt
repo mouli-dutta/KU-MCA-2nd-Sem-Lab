@@ -1,0 +1,286 @@
+mysql> create database a6mouli;
+Query OK, 1 row affected (0.19 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| A3mouli            |
+| A4mouli            |
+| A5mouli            |
+| a6mouli            |
+| information_schema |
+| mouli              |
+| mouli_assi2        |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use a6mouli;
+Database changed
+
+mysql> create table Branch(
+    -> br_name varchar(20) primary key,
+    -> city varchar(15),
+    -> assets decimal(10, 2));
+Query OK, 0 rows affected (0.94 sec)
+
+mysql> desc Branch;
++---------+---------------+------+-----+---------+-------+
+| Field   | Type          | Null | Key | Default | Extra |
++---------+---------------+------+-----+---------+-------+
+| br_name | varchar(20)   | NO   | PRI | NULL    |       |
+| city    | varchar(15)   | YES  |     | NULL    |       |
+| assets  | decimal(10,2) | YES  |     | NULL    |       |
++---------+---------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> create table Customers(
+    -> cust_id varchar(10) primary key,
+    -> cust_name varchar(20),
+    -> street varchar(20),
+    -> city varchar(15) references Branch);
+Query OK, 0 rows affected (0.60 sec)
+
+mysql> desc Customers;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| cust_id   | varchar(10) | NO   | PRI | NULL    |       |
+| cust_name | varchar(20) | YES  |     | NULL    |       |
+| street    | varchar(20) | YES  |     | NULL    |       |
+| city      | varchar(15) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table Account(
+    -> acc_no varchar(12) primary key,
+    -> br_name varchar(20) references Branch,
+    -> balance decimal(10, 2),
+    -> cust_name varchar(20) references Customers);
+Query OK, 0 rows affected (0.52 sec)
+
+mysql> desc Account;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| acc_no    | varchar(12)   | NO   | PRI | NULL    |       |
+| br_name   | varchar(20)   | YES  |     | NULL    |       |
+| balance   | decimal(10,2) | YES  |     | NULL    |       |
+| cust_name | varchar(20)   | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> create table Borrow(
+    -> loan_no varchar(12) primary key,
+    -> br_name varchar(20) references Branch,
+    -> amount decimal(10,2));
+Query OK, 0 rows affected (0.72 sec)
+
+mysql> desc Borrow;
++---------+---------------+------+-----+---------+-------+
+| Field   | Type          | Null | Key | Default | Extra |
++---------+---------------+------+-----+---------+-------+
+| loan_no | varchar(12)   | NO   | PRI | NULL    |       |
+| br_name | varchar(20)   | YES  |     | NULL    |       |
+| amount  | decimal(10,2) | YES  |     | NULL    |       |
++---------+---------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> INSERT INTO Branch (br_name, city, assets)
+    -> VALUES
+    -> ("Axis Bank", "Ranaghat", 1365.24),
+    -> ("Bandhan Bank", "Kalyani", 1256.89),
+    -> ("Bank Of India", "Kolkata", 4512.23),
+    -> ("Canara Bank", "Kolkata", 1025.15),
+    -> ("SBI Bank", "Ranaghat", 1689.36);
+Query OK, 5 rows affected (0.12 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from Branch;
++---------------+----------+---------+
+| br_name       | city     | assets  |
++---------------+----------+---------+
+| Axis Bank     | Ranaghat | 1365.24 |
+| Bandhan Bank  | Kalyani  | 1256.89 |
+| Bank Of India | Kolkata  | 4512.23 |
+| Canara Bank   | Kolkata  | 1025.15 |
+| SBI Bank      | Ranaghat | 1689.36 |
++---------------+----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO Customers(cust_id, cust_name, street, city)
+    -> VALUES
+    -> ("CUS1", "Mouli", "Habibpur", "Ranaghat"),
+    -> ("CUS2", "Noorain", "Ghosh Para", "kalyani"),
+    -> ("CUS3", "Ammrisha", "College Street", "Kolkata"),
+    -> ("CUS4", "Nabanita", "Central Park", "Kolkata"),
+    -> ("CUS5", "Maya", "Civil Centre", "Ranaghat");
+Query OK, 5 rows affected (0.09 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from Customers;
++---------+-----------+----------------+----------+
+| cust_id | cust_name | street         | city     |
++---------+-----------+----------------+----------+
+| CUS1    | Mouli     | Habibpur       | Ranaghat |
+| CUS2    | Noorain   | Ghosh Para     | kalyani  |
+| CUS3    | Ammrisha  | College Street | Kolkata  |
+| CUS4    | Nabanita  | Central Park   | Kolkata  |
+| CUS5    | Maya      | Civil Centre   | Ranaghat |
++---------+-----------+----------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO Account (acc_no, br_name, balance, cust_name)
+    -> VALUES
+    -> ("1246XXXX3492", "SBI Bank", 782937.35, "Noorain"),
+    -> ("1345XXXX2347", "Axis Bank", 738120.66, "Mouli"),
+    -> ("1893XXXX2974", "Bandhan Bank", 356784.26, "Ammrisha"),
+    -> ("2108XXXX2398", "Bank Of India", 289794.12, "Nabanita"),
+    -> ("1357XXXX4684", "Canara Bank", 467366.28, "Maya");
+Query OK, 5 rows affected (0.19 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Account;
++--------------+---------------+-----------+-----------+
+| acc_no       | br_name       | balance   | cust_name |
++--------------+---------------+-----------+-----------+
+| 1246XXXX3492 | SBI Bank      | 782937.35 | Noorain   |
+| 1345XXXX2347 | Axis Bank     | 738120.66 | Mouli     |
+| 1357XXXX4684 | Canara Bank   | 467366.28 | Maya      |
+| 1893XXXX2974 | Bandhan Bank  | 356784.26 | Ammrisha  |
+| 2108XXXX2398 | Bank Of India | 289794.12 | Nabanita  |
++--------------+---------------+-----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO Borrow (loan_no, br_name, amount)
+    -> VALUES
+    -> ("LOAN1", "SBI Bank", 20000),
+    -> ("LOAN2", "Axis Bank", 15000),
+    -> ("LOAN3", "Canara Bank", 49000),
+    -> ("LOAN4", "Bandhan Bank", 29455),
+    -> ("LOAN5", "Bank Of India", 29583);
+Query OK, 5 rows affected (0.09 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Borrow;
++---------+---------------+----------+
+| loan_no | br_name       | amount   |
++---------+---------------+----------+
+| LOAN1   | SBI Bank      | 20000.00 |
+| LOAN2   | Axis Bank     | 15000.00 |
+| LOAN3   | Canara Bank   | 49000.00 |
+| LOAN4   | Bandhan Bank  | 29455.00 |
+| LOAN5   | Bank Of India | 29583.00 |
++---------+---------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT br_name, city FROM Branch
+    -> WHERE br_name = (SELECT br_name FROM Borrow
+    -> GROUP BY br_name
+    -> ORDER BY COUNT(loan_no)
+    -> DESC LIMIT 1);
++----------+----------+
+| br_name  | city     |
++----------+----------+
+| SBI Bank | Ranaghat |
++----------+----------+
+1 row in set (0.03 sec)
+
+mysql> SELECT loan_no FROM Borrow
+    -> WHERE amount > 12000;
++---------+
+| loan_no |
++---------+
+| LOAN1   |
+| LOAN2   |
+| LOAN3   |
+| LOAN4   |
+| LOAN5   |
++---------+
+5 rows in set (0.02 sec)
+
+mysql> UPDATE Customers
+    -> SET cust_name = "Ram"
+    -> WHERE cust_id = "CUS5";
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Customers;
++---------+-----------+----------------+----------+
+| cust_id | cust_name | street         | city     |
++---------+-----------+----------------+----------+
+| CUS1    | Mouli     | Habibpur       | Ranaghat |
+| CUS2    | Noorain   | Ghosh Para     | kalyani  |
+| CUS3    | Ammrisha  | College Street | Kolkata  |
+| CUS4    | Nabanita  | Central Park   | Kolkata  |
+| CUS5    | Ram       | Civil Centre   | Ranaghat |
++---------+-----------+----------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE Customers
+    -> SET street = "Civil Centre"
+    -> WHERE cust_id = "CUS2";
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Customers
+    -> SET street = "Civil Centre"
+    -> WHERE cust_id = "CUS4";
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Customers
+    -> SET city = "Ranaghat"
+    -> WHERE cust_id = "CUS2";
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Customers
+    -> SET city = "Ranaghat"
+    -> WHERE cust_id = "CUS4";
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Customers;
++---------+-----------+----------------+----------+
+| cust_id | cust_name | street         | city     |
++---------+-----------+----------------+----------+
+| CUS1    | Mouli     | Habibpur       | Ranaghat |
+| CUS2    | Noorain   | Civil Centre   | Ranaghat |
+| CUS3    | Ammrisha  | College Street | Kolkata  |
+| CUS4    | Nabanita  | Civil Centre   | Ranaghat |
+| CUS5    | Ram       | Civil Centre   | Ranaghat |
++---------+-----------+----------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT cust_name FROM Customers
+    -> WHERE street = 
+    -> (SELECT street FROM Customers
+    -> WHERE cust_name = "Ram")
+    -> AND city = (SELECT city FROM Customers
+    -> WHERE cust_name = "Ram");
++-----------+
+| cust_name |
++-----------+
+| Noorain   |
+| Nabanita  |
+| Ram       |
++-----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT cust_name
+    -> FROM Account
+    -> WHERE br_name IN
+    -> (SELECT br_name FROM Branch
+    -> WHERE city = "Kalyani");
++-----------+
+| cust_name |
++-----------+
+| Ammrisha  |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> 
