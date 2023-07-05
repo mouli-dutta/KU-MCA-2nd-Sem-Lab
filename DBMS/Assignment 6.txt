@@ -1,3 +1,19 @@
+Question:
+Consider the following relational schema and solve the folowing queries: 
+Customer(cust_id, name, street, city) 
+Account(acc_no, br_name, bal, cust_name) 
+Branch(br_name, city, assets) 
+Borrow(loan_no, br_name, amount) 
+
+Queries: 
+1.	Find the branch name and city of the bank that borrow maximum no. of loans. 
+2.	Find all loan numbers for loans with an amount greater than Rs. 12000/- 
+3.	Find the names of all customers who live on the same street and city as 'Ram'. 
+4.	Find all customers who have an account at all branches located at Kalyani.
+
+
+Solution:
+
 mysql> create database a6mouli;
 Query OK, 1 row affected (0.19 sec)
 
