@@ -1,0 +1,193 @@
+Assignment 1
+Consider the following relational schema for a company and solve the following queries:
+Supply (item_id, supplier_id, purchase_date, Quantity, unit_cost);
+Material (item_id, item_name, make);
+
+Queries:
+(a) Find the name of all materials supplied by ‘S2’ and make is ‘Hindustan Liver’.
+(b) Find the purchase date of the item ‘shampoo’ having unit cost greater than Rs. 
+50.
+(c) Find all item name supplied by ‘S5’.
+(d) List all the materials under the make ‘Himalay’
+
+SOLUTION:
+mysql> create database a1mouli;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> show databases;
++-----------------------------+
+| Database |
++-----------------------------+
+| a1mouli |
+| information_schema |
+| mysql |
+| performance_schema |
+| sakila |
+| sys |
+| world |
++-----------------------------+
+7 rows in set (0.00 sec)
+
+mysql> use a1mouli;
+Database changed
+
+mysql> create table Material
+→( item_id varchar(8) primary key, item_name varchar(20), make varchar(15) );
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> desc Material;
++--------------+----------------+--------+------+-----------+--------+
+|Field | Type | Null | Key | Default | Extra |
++--------------+----------------+--------+-------+-----------+--------+
+| item_id | varchar(8) | NO | PRI | NULL | |
+| item_name | varchar(20) | YES | | NULL | |
+| make | varchar(15) | YES | | NULL | |
++--------------+----------------+--------+-------+-----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> create table Supply
+→ (item_id varchar(8) references Material, supplier_id varchar(11), purchase_date 
+Date, quantity integer(8), unit_cost float(10,2) );
+Query OK, 0 rows affected, 2 warnings (0.08 sec)
+
+mysql> desc Supply;
++-------------------+----------------+-------+------+----------+--------+
+| Field | Type | Null | Key | Default | Extra |
++-------------------+----------------+--------+-----+-----------+--------+
+| item_id | varchar(8) | YES | | NULL | |
+| supplier_id | varchar(11) | YES | | NULL | |
+| purchase_date | date | YES | | NULL | |
+| quantity | int | YES | | NULL | |
+| unit_cost | float(10,2) | YES | | NULL | |
++-------------------+----------------+--------+-----+-----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> insert into Material VALUES('I1','Bannispaz','Himalaya');
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Material VALUES('I2','Lux','Hindustan Liver');
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Material VALUES('I3','Shampoo','Hindustan Liver');
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Material VALUES('I4','NaturalRedRosePow','Himalaya');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into Material VALUES('I5','Clearvital','Himalaya');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into Material VALUES('I6','Pepsodent ','Hindustan Liver');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into Material VALUES('I7','Lakme Kajal','Lakme');
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Material VALUES('I8','Dove','Hindustan Liver');
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Material VALUES('I9','Lakme Beauty','Lakme');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select *from Material;
++----------+------------------------------+----------------------+
+| item_id | item_name | make |
++----------+-------------------------------+---------------------+
+| I1 | Bannispaz | Himalaya |
+| I2 | Lux | Hindustan Liver |
+| I3 | Shampoo | Hindustan Liver |
+| I4 | NaturalRedRosePow | Himalaya |
+| I5 | Clearvital | Himalaya |
+| I6 | Pepsodent | Hindustan Liver |
+| I7 | Lakme Kajal | Lakme |
+| I8 | Dove | Hindustan Liver |
+| I9 | Lakme Beauty | Lakme |
++----------+-----------------------------+-----------------------+
+9 rows in set (0.00 sec)
+
+mysql> insert into Supply VALUES ('I4','S1','2022-09-17',12,2400.50);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Supply VALUES ('I1','S2','2022-09-17',24,240.524);
+Query OK, 1 row affected (0.01 sec)
+mysql> insert into Supply VALUES ('I2','S2','2022-09-19',20,400.20);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Supply VALUES ('I3','S3','2022-10-19',1500,1500.00);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Supply VALUES ('I5','S4','2022-10-19',150,25500.04);
+Query OK, 1 row affected (0.02 sec)
+mysql> insert into Supply VALUES ('I9','S2','2022-10-20',15,9650.12);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Supply VALUES ('I9','S5','2022-11-18',15,9650.12);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Supply VALUES ('I8','S5','2022-11-18',250,65947.21);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Supply VALUES ('I7','S4','2022-11-19',40,15000.12);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Supply VALUES ('I6','S2','2022-11-19',100,2500.15);
+Query OK, 1 row affected (0.01 sec)
+mysql> insert into Supply VALUES ('I6','S5','2022-11-22',150,3750.75);
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into Supply VALUES ('I5','S5','2022-11-22',30,30000.75);
+Query OK, 1 row affected (0.01 sec)
+mysql> insert into Supply VALUES ('I8','S2','2022-12-02',500,10000.25);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select *from Supply;
++----------+--------------+---------------------+-----------+--------------+
+| item_id | supplier_id | purchase_date | quantity | unit_cost |
++----------+--------------+---------------------+-----------+--------------+
+| I4 | S1 | 2022-09-17 | 12 | 2400.50 |
+| I1 | S2 | 2022-09-17 | 24 | 240.52 |
+| I2 | S2 | 2022-09-19 | 20 | 400.20 |
+| I3 | S3 | 2022-10-19 | 1500 | 1500.00 | 
+| I5 | S4 | 2022-10-19 | 150 | 25500.04 |
+| I9 | S2 | 2022-10-20 | 15 | 9650.12 |
+| I9 | S5 | 2022-11-18 | 15 | 9650.12 |
+| I8 | S5 | 2022-11-18 | 250 | 65947.21 |
+| I7 | S4 | 2022-11-19 | 40 | 15000.12 |
+| I6 | S2 | 2022-11-19 | 100 | 2500.15 |
+| I6 | S5 | 2022-11-22 | 150 | 3750.75 |
+| I5 | S5 | 2022-11-22 | 30 | 30000.75 |
+| I8 | S2 | 2022-12-02 | 500 | 10000.25 |
++----------+--------------+---------------------+-----------+---------------+
+13 rows in set (0.00 sec)
+
+mysql> select item_name from Material M, Supply S where make = 'Hindustan Liver' and 
+M.item_id=S.item_id and supplier_id='S2';
++-----------------+
+| item_name |
++-----------------+
+| Lux |
+| Pepsodent G |
+| Dove |
++-----------------+
+3 rows in set (0.00 sec)
+
+mysql> select item_name from Material m, Supply S where M.item_id=S.item_id and 
+item_name='Shampoo' and unit_cost>50.00;
++---------------+
+| item_name |
++---------------+
+| Shampoo |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select item_name from Material m, Supply S where M.item_id=S.item_id and 
+item_name='Shampoo' and unit_cost<50.00;
+Empty set (0.00 sec)
+
+mysql> select item_name from Material m, Supply S where M.item_id=S.item_id and 
+supplier_id='S5';
++-----------------+
+| item_name |
++-----------------+
+| Lakme Bridal |
+| Dove |
+| Pepsodent G |
+| Clearvital |
++-----------------+
+4 rows in set (0.00 sec)
+
+mysql> select item_name from Material m, Supply S where M.item_id=S.item_id and 
+make='Himalaya';
++-----------------------------+
+| item_name |
++-----------------------------+
+| NaturalRedRosePow |
+| Bannispaz |
+| Clearvital |
+| Clearvital |
++------------------------------+
+4 rows in set (0.00 sec)

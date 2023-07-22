@@ -1,0 +1,393 @@
+Assingment2 ... 
+ Consider the database Schema:
+ Employee(Eid, Name, Depid, Qualification, Age),
+ Salary(Eid, Basic, D.A., HRA, Bonus, Total_Salary) And 
+ Department(Depid, Desc, HoD, Location) 
+Write SQL queries for the following : 
+Contains : 
+• Eid in Both the tables is the primary key. 
+• Age must be greater than 18 and less than 60. 
+• Eid is a 6-digit alphanumeric code stars with with 'EMP' followed by 3-digit number. 
+(Maintain at insertion). 
+• Depid is 6-digit alphanumeric code stars with 'Dep' followed by 3-digit number. 
+(Maintain at insertion). 
+• D.A. is 25% of the Basic Salary. 
+• HRA is 8% of the Basic Salary. 
+• Bonus is 5% of the Basic Salary. 
+• Depid is the primary key in the Department Table. 
+• HoD represents Head of the Department must be an Employee from Employee 
+table, storees Eid.
+• Desc is department description. 
+Task: 
+• Create the Department table with the above-mentioned details. 
+• Insert all the Department Details in the Department Table. 
+• Add new Filed NoE in the Department table. NoE represents the number of employees 
+present in the Employee Department for a specific Department. 
+• Update the NoE field values using a query by counting the number of employees from 
+the Employees table. 
+Queries:
+1. Display the name and qualification of all the HoDs whose department is in Kolkata. 
+2. Display the name, department, and salary of all the employees that are HoD of some 
+department. 
+3. Display the details of all the employees who are younger than average employee age. 
+4. Display the details of the highest-paid HoD. 
+5. Change the HoD of Dep003 to Emp006. 
+6. Display the Department details and average salary received by each Department.
+
+Solution:
+
+mysql> create database A2mouli; 
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use A2mouli;
+Database changed 
+mysql> create table Employee ( eid varchar(6) primary key, name varchar(20), qualification varchar(15),
+age integer); 
+Query OK, 0 rows affected (0.40 sec)
+
+mysql> desc Employee; 
++------------------+-----------------+------+------+-----------+-------+ 
+| Field | Type | Null| Key| Default | Extra | 
++------------------+-----------------+------+------+------------+-------+ 
+| eid | varchar(6) | NO | PRI | NULL | | 
+| name | varchar(20) | YES | | NULL | | 
+| qualification | varchar(15) | YES | | NULL | | 
+| age | int(11) | YES | | NULL | |
++-----------------+-----------------+------+------+------------+-------+
+4 rows in set (0.01 sec)
+
+mysql> create table Salary( eid varchar(6) references Employee, basic integer, da_ decimal(10,2), hra 
+decimal(10,2), bonus decimal(10,2), total_salary decimal(10,2), primary key(eid));
+Query OK, 0 rows affected (0.32 sec)
+
+mysql> desc Salary; 
++-----------------+-------------------+-------+-----+-----------+--------+ 
+| Field | Type | Null | Key| Default | Extra| 
++-----------------+-------------------+-------+-----+-----------+--------+ 
+| eid | varchar(6) | NO | PRI | NULL | | 
+| basic | int(11) | YES | | NULL | | 
+| da_ | decimal(10,2) | YES | | NULL | | 
+| hra | decimal(10,2) | YES | | NULL | | 
+| bonus | decimal(10,2) | YES | | NULL | | 
+| total_salary | decimal(10,2) | YES | | NULL | | 
++-----------------+--------------------+------+-----+-----------+-------+ 
+6 rows in set (0.00 sec)
+
+mysql> create table Department ( depid varchar(6), desc_ varchar(20), hod varchar(6) references 
+Employee, location varchar(20) ); 
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> desc Department; 
++------------+----------------+------+-------+-----------+--------+ 
+| Field | Type | Null | Key | Default | Extra | 
++------------+----------------+------+-------+-----------+--------+ 
+| depid | varchar(6) | YES | | NULL | | 
+| desc_ | varchar(20) | YES | | NULL | | 
+| hod | varchar(6) | YES | | NULL | | 
+| location | varchar(20) | YES | | NULL | | 
++------------+-----------------+------+------+-----------+-------+ 
+4 rows in set (0.00 sec)
+
+mysql> insert into Employee VALUES ('Emp001','Prof. Anup Karmarkar','M.Phil',34); 
+Query OK, 1 row affected (0.07 sec) 
+mysql> insert into Employee VALUES ('Emp002','Mr. Saikat Karmakar','Ph.D',45); 
+Query OK, 1 row affected (0.04 sec) 
+mysql> insert into Employee VALUES ('Emp003','Mr. Soumyadeep Das','Post.Doc',36); 
+Query OK, 1 row affected (0.07 sec) 
+mysql> insert into Employee VALUES ('Emp004','Prof. Rohan Das','Ph.D',52); 
+Query OK, 1 row affected (0.12 sec)
+mysql> insert into Employee VALUES ('Emp005','Mrs. Poulina Pal','M.Phil',35); 
+Query OK, 1 row affected (0.16 sec)
+mysql> insert into Employee VALUES ('Emp006','Mrs. Aishwarya Ghosh','M.Phil',32);
+Query OK, 1 row affected (0.01 sec) 
+mysql> insert into Employee VALUES ('Emp007','Prof. Sourav Saha','Ph.D',37); 
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select *from Employee; 
++------------+------------------------------+------------------+------+ 
+| eid | name | qualification | age | 
++------------+------------------------------+------------------+------+ 
+| Emp001 | Prof. Anup Karmarkar | M.Phil | 34 | 
+| Emp002 | Mr. Saikat Karmarkar | Ph.D | 45 | 
+| Emp003 | Mr. Soumyadeep Das | Post.Doc | 36 | 
+| Emp004 | Prof. Rohan Das | Ph.D | 52 | 
+| Emp005 | Mrs. Poulina Pal | M.Phil | 35 | 
+| Emp006 | Mrs. Aishwarya Ghosh| M.Phil | 32 | 
+| Emp007 | Prof. Sourav Saha | Ph.D | 37 |
++------------+------------------------------+-----------------+------+ 
+7 rows in set (0.00 sec)
+
+mysql> insert into Salary (eid,basic,da_,hra,bonus,total_salary)VALUES 
+("Emp001",100000,NULL,NULL,NULL,NULL); 
+Query OK, 1 row affected (0.11 sec) 
+mysql> insert into Salary (eid,basic,da_,hra,bonus,total_salary)VALUES 
+("Emp002",200000,NULL,NULL,NULL,NULL); 
+Query OK, 1 row affected (0.06 sec) 
+mysql> insert into Salary (eid,basic,da_,hra,bonus,total_salary)VALUES 
+("Emp003",75000,NULL,NULL,NULL,NULL); 
+Query OK, 1 row affected (0.04 sec) 
+mysql> insert into Salary (eid,basic,da_,hra,bonus,total_salary)VALUES 
+("Emp004",60000,NULL,NULL,NULL,NULL); 
+Query OK, 1 row affected (0.06 sec) 
+mysql> insert into Salary (eid,basic,da_,hra,bonus,total_salary)VALUES 
+("Emp005",70000,NULL,NULL,NULL,NULL); 
+Query OK, 1 row affected (0.01 sec) 
+mysql> insert into Salary (eid,basic,da_,hra,bonus,total_salary)VALUES 
+("Emp006",50000,NULL,NULL,NULL,NULL); 
+Query OK, 1 row affected (0.02 sec) 
+mysql> insert into Salary (eid,basic,da_,hra,bonus,total_salary)VALUES 
+("Emp007",85200,NULL,NULL,NULL,NULL); 
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select *from Salary; 
++------------+----------+----------+-------+----------+-----------------+ 
+| eid | basic | da_ | hra | bonus | total_salary | 
++------------+-----------+---------+--------+---------+-----------------+ 
+| Emp001 | 100000 | NULL | NULL | NULL | NULL | 
+| Emp002 | 200000 | NULL | NULL | NULL | NULL | 
+| Emp003 | 75000 | NULL | NULL | NULL | NULL | 
+| Emp004 | 60000 | NULL | NULL | NULL | NULL | 
+| Emp005 | 70000 | NULL | NULL | NULL | NULL | 
+| Emp006 | 50000 | NULL | NULL | NULL | NULL | 
+| Emp007 | 85200 | NULL | NULL | NULL | NULL | 
++------------+------------+--------+--------+--------+------------------+
+7 rows in set (0.00 sec)
+
+mysql> insert into Department VALUES('Dep001','English','Emp001','Kolkata'); 
+Query OK, 1 row affected (0.04 sec) 
+mysql> insert into Department VALUES('Dep002','Physics','Emp002','Kalyani'); 
+Query OK, 1 row affected (0.04 sec) mysql> insert into Department 
+VALUES('Dep003','Physics','Emp003','Kanchrapara'); 
+Query OK, 1 row affected (0.04 sec) 
+mysql> insert into Department VALUES('Dep004','Botany','Emp004','Nabadwip'); 
+Query OK, 1 row affected (0.07 sec) 
+mysql> insert into Department VALUES('Dep005','Computer science','Emp005','Kolkata'); 
+Query OK, 1 row affected (0.02 sec) 
+mysql> insert into Department VALUES('Dep006','Bengali','Emp006','Murshidabad');
+Query OK, 1 row affected (0.05 sec) 
+mysql> insert into Department VALUES('Dep007','Mathematics','Emp007','Kalyani'); 
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select *from Department; 
++------------+----------------------------+-----------+-------------------+ 
+| depid | desc_ | hod | location | 
++------------+---------------------------+------------+-------------------+ 
+| Dep001 | English | Emp001 | Kolkata | 
+| Dep002 | Physics | Emp002 | Kalyani | 
+| Dep003 | Physics | Emp003 | Kanchrapara | 
+| Dep004 | Botany | Emp004 | Nabadwip | 
+| Dep005 | Computer science | Emp005 | Kolkata | 
+| Dep006 | Bengali | Emp006 | Murshidabad| 
+| Dep007 | Mathematics | Emp007 | Kalyani | 
++------------+---------------------------+------------+-------------------+ 
+7 rows in set (0.00 sec)
+
+mysql> update Salary set da_ = 0.25*basic,hra=0.08*basic,bonus=0.05*basic, 
+total_salary = basic + da_ + hra + bonus where eid= 'Emp001'; 
+Query OK, 1 row affected (0.09 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0
+
+mysql> update Salary set da_ = 0.25*basic,hra=0.08*basic,bonus=0.05*basic, 
+total_salary = basic + da_ + hra + bonus where eid= 'Emp002'; 
+Query OK, 1 row affected (0.03 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0 
+
+mysql> update Salary set da_ = 0.25*basic,hra=0.08*basic,
+bonus=0.05*basic, total_salary = basic + da_ + hra + bonus where eid= 'Emp003'; 
+Query OK, 1 row affected (0.02 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0 
+
+mysql> update Salary set da_ = 0.25*basic,hra=0.08*basic,bonus=0.05*basic, 
+total_salary = basic + da_ + hra + bonus where eid= 'Emp004'; 
+Query OK, 1 row affected (0.05 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0 
+
+mysql> update Salary set da_ = 0.25*basic,hra=0.08*basic,bonus=0.05*basic, 
+total_salary = basic + da_ + hra + bonus where eid= 'Emp005'; 
+Query OK, 1 row affected (0.03 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0 
+
+mysql> update Salary set da_ = 0.25*basic,hra=0.08*basic,bonus=0.05*basic, 
+total_salary = basic + da_ + hra + bonus where eid= 'Emp006'; 
+Query OK, 1 row affected (0.13 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0 
+
+mysql> update Salary set da_ = 0.25*basic,hra=0.08*basic,bonus=0.05*basic, 
+total_salary = basic + da_ + hra + bonus where eid= 'Emp007'; 
+Query OK, 1 row affected (0.03 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0
+
+mysql> select * from Salary; 
++------------+-----------+--------------+--------------+--------------+-----------------+ 
+| eid | basic | da_ | hra | bonus | total_salary | 
++------------+-----------+--------------+--------------+--------------+-----------------+ 
+| Emp001 | 100000 | 25000.00 | 8000.00 | 5000.00 | 138000.00 | 
+| Emp002 | 200000 | 50000.00 | 16000.00 | 10000.00 | 276000.00 | 
+| Emp003 | 75000 | 18750.00 | 6000.00 | 3750.00 | 103500.00 | 
+| Emp004 | 60000 | 15000.00 | 4800.00 | 3000.00 | 82800.00 | 
+| Emp005 | 70000 | 17500.00 | 5600.00 | 3500.00 | 96600.00 | 
+| Emp006 | 50000 | 12500.00 | 4000.00 | 2500.00 | 69000.00 |
+| Emp007 | 85200 | 21300.00 | 6816.00 | 4260.00 | 117576.00 | 
++------------+-----------+--------------+--------------+--------------+-----------------+ 
+7 rows in set (0.00 sec)
+
+mysql> alter table Employee add Depid varchar(6) references Department; 
+Query OK, 0 rows affected (0.25 sec) 
+Records: 0 Duplicates: 0 Warnings: 0 
+
+mysql> update Employee set depid = 'Dep001' where eid= 'Emp001'; 
+Query OK, 1 row affected (0.73 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0
+
+mysql> update Employee set depid = 'Dep002' where eid= 'Emp002'; 
+Query OK, 1 row affected (0.12 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0 
+
+mysql> update Employee set depid = 'Dep003' where eid= 'Emp003'; 
+Query OK, 1 row affected (0.17 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0 
+
+mysql> update Employee set depid = 'Dep004' where eid= 'Emp004'; 
+Query OK, 1 row affected (0.10 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0 
+
+mysql> update Employee set depid = 'Dep005' where eid= 'Emp005'; 
+Query OK, 1 row affected (0.18 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0 
+
+mysql> update Employee set depid = 'Dep006' where eid= 'Emp006'; 
+Query OK, 1 row affected (0.07 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0 
+
+mysql> update Employee set depid = 'Dep007' where eid= 'Emp007'; 
+Query OK, 0 rows affected (0.07 sec) 
+Rows matched: 1 Changed: 0 Warnings: 0
+
+mysql> select * from Employee; 
++------------+------------------------------+------------------+------+------------+ 
+| eid | name | qualification | age | Depid | 
++------------+------------------------------+------------------+------+------------+ 
+| Emp001 | Prof. Anup Karmarkar | M.Phil | 34 | Dep001 | 
+| Emp002 | Mr. Saikat Karmarkar | Ph.D | 45 | Dep002 | 
+| Emp003 | Mr. Soumyadeep Das | Post.Doc | 36 | Dep003 | 
+| Emp004 | Prof. Rohan Das | Ph.D | 52 | Dep004 | 
+| Emp005 | Mrs. Poulina Pal | M.Phil | 35 | Dep005 | 
+| Emp006 | Mrs. Aishwarya Ghosh| M.Phil | 32 | Dep006 | 
+| Emp007 | Prof. Sourav Saha | Ph.D | 37 | Dep007 | 
++------------+-------------------------------+-----------------+------+------------+ 
+7 rows in set (0.00 sec)
+
+mysql> alter table Department ADD NoE varchar(6); 
+Query OK, 0 rows affected (0.25 sec) 
+Records: 0 Duplicates: 0 Warnings: 0 
+
+mysql> update Department set Department.NoE = (select count(Eid) from Employee where 
+Department.Depid=Employee.Depid); 
+Query OK, 7 rows affected (0.15 sec) 
+Rows matched: 7 Changed: 7 Warnings: 0
+
+mysql> select *from Department; 
++------------+------------------------+------------+---------------------+------+ 
+| depid | desc_ | hod | location | NoE | 
++------------+------------------------+-------------+--------------------+------+ 
+| Dep001 | English | Emp001 | Kolkata | 1 | 
+| Dep002 | Physics | Emp002 | Kalyani | 1 | 
+| Dep003 | Physics | Emp006 | Kanchrapara | 1 | 
+| Dep004 | Botany | Emp004 | Nabadwip | 1 | 
+| Dep005 | Computer science | Emp005 | Kolkata | 1 | 
+| Dep006 | Bengali | Emp006 | Murshidabad | 1 | 
+| Dep007 | Mathematics | Emp007 | Kalyani | 1 | 
++------------+-------------------------+------------+-------------------+-------+ 
+7 rows in set (0.00 sec)
+
+
+Queries:
+
+1). Display the name and qualification of all the HoDs whose department is in Kolkata. 
+mysql> select Name,qualification from Employee E,Department D where E.Eid=D.Hod and 
+Location="Kolkata";
++------------------------------+------------------+ 
+| Name | qualification | 
++------------------------------+------------------+ 
+| Prof. Anup Karmarkar | M.Phil | 
+| Mrs. Poulina Pal | M.Phil | 
++------------------------------+------------------+
+2 rows in set (0.11 sec)
+
+
+2). Display the name, department, and salary of all the employees that are HoD of some department. 
+mysql> select Name, Desc_ as Department, Total_Salary as Salary from Employee E,Department D,Salary 
+S where E.Eid=D.Hod and E.Eid=S.Eid;
++------------------------------+--------------------------+---------------+ 
+| Name | Department | Salary | 
++------------------------------+--------------------------+---------------+ 
+| Prof. Anup Karmarkar | English | 138000.00 | 
+| Mr. Saikat Karmarkar | Physics | 276000.00 | 
+| Mr. Soumyadeep Das | Physics | 103500.00 | 
+| Prof. Rohan Das | Botany | 82800.00 | 
+| Mrs. Poulina Pal | Computer science | 96600.00 | 
+| Mrs. Aishwarya Ghosh| Bengali | 69000.00 | 
+| Prof. Sourav Saha | Mathematics | 117576.00 | 
++-------------------------------+-------------------------+----------------+ 
+7 rows in set (0.00 sec)
+
+
+3). Display the details of all the employees who are younger than average employee age.
+mysql> select * from Employee where Age<(select avg(Age) from Employee);
++------------+------------------------------+------------------+------+-----------+ 
+| eid | name | qualification | age | Depid | 
++------------+------------------------------+------------------+------+-----------+ 
+| Emp001 | Prof. Anup Karmarkar | M.Phil | 34 | Dep001 | 
+| Emp003 | Mr. Soumyadeep Das | Post.Doc | 36 | Dep003 | 
+| Emp005 | Mrs. Poulina pal | M.Phil | 35 | Dep005 | 
+| Emp006 | Mrs. Aishwarya Ghosh| M.Phil | 32 | Dep006 | 
+| Emp007 | Prof. Sourav Saha | Ph.D | 37 | Dep007 | 
++------------+-------------------------------+------------------+-----+------------+ 
+5 rows in set (0.11 sec)
+
+
+4). Display the details of the highest-paid HoD. 
+mysql> select Name,Qualification,Age from Employee E, Salary S where E.Eid=S.Eid and 
+Total_Salary=(select max(Total_Salary) from Salary); 
++----------------------------+-------------------+------+ 
+| Name | Qualification | Age | 
++----------------------------+-------------------+------+ 
+| Mr. Saikat Karmakar | Ph.D | 45 | 
++----------------------------+-------------------+------+ 
+1 row in set (0.02 sec)
+
+
+5). Change the HoD of Dep003 to Emp006. 
+mysql> update Department set Hod="Emp006" where Depid="Dep003"; 
+Query OK, 1 row affected (0.05 sec) 
+Rows matched: 1 Changed: 1 Warnings: 0
+mysql> select *from department; 
++--------+-----------------------------+------------+------------------+ 
+| depid | desc_ | hod | location | 
++--------+-----------------------------+------------+------------------+ 
+| Dep001 | English | Emp001 | Kolkata | 
+| Dep002 | Physics | Emp002 | Kalyani | 
+| Dep003 | Physics | Emp006 | Kanchrapara | 
+| Dep004 | Botany | Emp004 | Nabadwip | 
+| Dep005 | Computer science | Emp005 | Kolkata | 
+| Dep006 | Bengali | Emp006 | Murshidabad | 
+| Dep007 | Mathematics | Emp007 | Kalyani | 
++------------+-------------------------+------------+-------------------+ 
+7 rows in set (0.00 sec)
+
+
+6). Display the Department details and average salary received by each Department. 
+mysql>select D.Depid,Desc_,Hod,Location,NoE,avg(Total_Salary) as AvgSalary from Department D, 
+Salary S, Employee E where D.Depid=E.Depid and E.Eid=S.Eid group by D.Depid;
++------------+-------------------------+------------+--------------------+------+----------------------+ 
+| Depid | Desc_ | Hod | Location | NoE | AvgSalary | 
++------------+-------------------------+------------+--------------------+------+----------------------+ 
+| Dep001 | English | Emp001 | Kolkata | 1 | 138000.000000 | 
+| Dep002 | Physics | Emp002 | Kalyani | 1 | 276000.000000 | 
+| Dep003 | Physics | Emp006 | Kanchrapara | 1 | 103500.000000 | 
+| Dep004 | Botany | Emp004 | Nabadwip | 1 | 82800.000000 | 
+| Dep005 | Computer science | Emp005 | Kolkata | 1 | 96600.000000 | 
+| Dep006 | Bengali | Emp006 | Murshidabad | 1 | 69000.000000 | 
+| Dep007 | Mathematics | Emp007 | Kalyani | 1 | 117576.000000 | 
++------------+-------------------------+-------------+------------------+-------+----------------------+
+7 rows in set (0.10 sec)

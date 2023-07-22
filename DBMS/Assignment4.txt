@@ -1,0 +1,341 @@
+Assignment 4 …
+Consider the following database schema and solve the following queries: 
+Flights(f_no, from, to, distance, departs, arrive, fare) 
+Aircraft(aid, aname, crushing_range) 
+Employees(eid, ename, salary) 
+Certified(aid, eid) 
+Queries:
+(a) Identify the flights that can be piloted by every pilot whose salary more than Rs. 1,00,000 
+(b) List the names and salary of the employees whose salary is more than average salary. 
+(c) For all aircraft with the crushing range over 1000 miles, find the names of the aircraft and average salary 
+for pilots. 
+(d) Find The names of pilots who can operate planes with a range greater than 3000 miles but not certified 
+on any ‘BOYING’ aircraft.
+Solution:
+mysql> create database A4mouli;
+Query OK, 1 row affected (0.17 sec)
+mysql> show databases;
++-----------------------------+
+| Database |
++-----------------------------+
+| A3mouli |
+| A4mouli |
+| anik |
+| company |
+| employee |
+| information_schema |
+| mouli |
+| mouli_assi2 |
+| mysql |
+| neha |
+| performance_schema |
+| student |
+| sys |
++-------------------------------+
+13 rows in set (0.00 sec)
+mysql> use A4mouli;
+Database changed
+mysql> create table Aircraft (
+ -> aid varchar(8) primary key,
+ -> aname varchar(20),
+ -> crushing_range decimal(10,2));
+Query OK, 0 rows affected (0.64 sec)
+mysql> desc Aircraft;
++----------------------+-------------------+-------+------+-----------+--------+
+| Field | Type | Null | Key | Default | Extra |
++----------------------+-------------------+-------+------+-----------+--------+
+| aid | varchar(8) | NO | PRI | NULL | |
+| aname | varchar(20) | YES | | NULL | |
+| crushing_range | decimal(10,2) | YES | | NULL | |
++----------------------+-------------------+-------+------+-----------+--------+
+3 rows in set (0.01 sec)
+mysql> create table Employees (
+ -> eid varchar(8) primary key,
+ -> ename varchar(20),
+ -> salary integer(9));
+Query OK, 0 rows affected, 1 warning (0.55 sec)
+mysql> desc Employees;
++-----------+-----------------+-------+------+------------+--------+
+| Field | Type | Null | Key | Default | Extra |
++-----------+-----------------+-------+------+------------+--------+
+| eid | varchar(8) | NO | PRI | NULL | |
+| ename | varchar(20) | YES | | NULL | |
+| salary | int | YES | | NULL | |
++-----------+-----------------+-------+------+------------+--------+
+3 rows in set (0.00 sec)
+mysql> create table Certified (
+ -> eid varchar(8) references Employees,
+ -> aid varchar(8) references Aircraft,
+ -> primary key(eid, aid));
+Query OK, 0 rows affected (0.92 sec)
+mysql> desc Certified;
++-------+---------------+-------+-----+------------+--------+
+| Field | Type | Null | Key | Default | Extra |
++-------+---------------+-------+-----+-----------+---------+
+| eid | varchar(8) | NO | PRI | NULL | |
+| aid | varchar(8) | NO | PRI | NULL | |
++-------+---------------+-------+-----+-----------+---------+
+2 rows in set (0.01 sec)
+mysql> create table Flights (
+ -> f_no varchar(10) references Certified,
+ -> from_ varchar(20),
+ -> to_ varchar(20),
+ -> distance decimal(10, 2),
+ -> departs time,
+ -> arrive time,
+ -> fare decimal(10, 2));
+Query OK, 0 rows affected (0.50 sec)
+mysql> desc Flights;
++------------+--------------------+-------+------+----------+--------+
+| Field | Type | Null | Key | Default| Extra |
++------------+--------------------+-------+------+----------+--------+
+| f_no | varchar(10) | YES | | NULL | |
+| from_ | varchar(20) | YES | | NULL | |
+| to_ | varchar(20) | YES | | NULL | |
+| distance | decimal(10,2) | YES | | NULL | |
+| departs | time | YES | | NULL | |
+| arrive | time | YES | | NULL | |
+| fare | decimal(10,2) | YES | | NULL | |
++------------+--------------------+-------+------+----------+--------+
+7 rows in set (0.00 sec)
+mysql> Insert into Flights values('IC301', 'Mumbai', 'Bangalore', 609.56, "14:15:01", "15:45:01", 6424.25);
+Query OK, 1 row affected (0.08 sec)
+mysql> Insert into Flights values('IC302', 'Bangalore', 'Kolkata', 970.89, "12:00:01", "14:20:59", 8846.50);
+Query OK, 1 row affected (0.14 sec)
+mysql> insert into Flights values('IC799', 'Mumbai', 'Kochi', 782.85, "16:29:59", "18:15:02", 13894.12);
+Query OK, 1 row affected (0.10 sec)
+mysql> insert into Flights values('MC101', 'Delhi', 'Varanasi', 521.45, "11:35:01", "13:05:03", 4210);
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Flights values('MV499', 'Delhi', 'Chennai', 1500.65, "21:00:59", "23:45:01", 12000);
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Flights values('AM1812', 'Lucknow', 'Delhi', 225, "10:10:00", "11:30:02", 4500);
+Query OK, 1 row affected (0.10 sec)
+mysql> select * from Flights;
++-------------+---------------+-------------+-------------+-------------+-------------+--------------+
+| f_no | from_ | to_ | distance | departs | arrive | fare |
++-------------+--------------+--------------+-------------+-------------+-------------+--------------+
+| IC301 | Mumbai | Bangalore | 609.56 | 14:15:01 | 15:45:01 | 6424.25 |
+| IC302 | Bangalore | Kolkata | 970.89 | 12:00:01 | 14:20:59 | 8846.50 |
+| IC799 | Mumbai | Kochi | 782.85 | 16:29:59 | 18:15:02 | 13894.12 |
+| MC101 | Delhi | Varanasi | 521.45 | 11:35:01 | 13:05:03 | 4210.00 |
+| MV499 | Delhi | Chennai | 1500.65 | 21:00:59 | 23:45:01 | 12000.00 |
+| AM1812 | Lucknow | Delhi | 225.00 | 10:10:00 | 11:30:02 | 4500.00 |
++-------------+--------------+---------------+-------------+-------------+-------------+--------------+
+6 rows in set (0.00 sec)
+mysql> insert into Employees values('EM101', 'Noorain Aziza', 150000);
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Employees values('EM102', 'Nabanita Saha', 140000);
+Query OK, 1 row affected (0.10 sec)
+mysql> insert into Employees values('EM103', 'Mouli Dutta', 160000);
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Employees values('EM104', 'Ammrisha Chowdhury', 170000);
+Query OK, 1 row affected (0.11 sec)
+mysql> insert into Employees values('EM105', 'Maya Murmu', 150000);
+Query OK, 1 row affected (0.07 sec)
+mysql> insert into Employees values('EM106', 'Preetha Chakraborty', 180000);
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Employees values('EM107', 'Abir Poddar', 50000);
+Query OK, 1 row affected (0.07 sec)
+mysql> insert into Employees values('EM108', 'Arnab Rong', 45000);
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Employees values('EM109', 'Aritra Paul', 70000);
+Query OK, 1 row affected (0.12 sec)
+mysql> insert into Employees values('EM110', 'Utsab Talukdar', 80000);
+Query OK, 1 row affected (0.08 sec)
+mysql> select * from Employees;
++-------+------------------------------------+-----------+
+| eid | ename | salary |
++-------+------------------------------------+-----------+
+| EM101 | Noorain Aziza | 150000 |
+| EM102 | Nabanita Saha | 140000 |
+| EM103 | Mouli Dutta | 160000 |
+| EM104 | Ammrisha Chowdhury | 170000 |
+| EM105 | Maya Murmu | 150000 |
+| EM106 | Preetha Chakraborty | 180000 |
+| EM107 | Abir Poddar | 50000 |
+| EM108 | Arnab Rong | 45000 |
+| EM109 | Aritra Paul | 70000 |
+| EM110 | Utsab Talukdar | 80000 |
++-----------+-------------------------------+-----------+
+10 rows in set (0.00 sec)
+mysql> insert into Aircraft values('IA101', 'Indian Airlines', 439.89);
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Aircraft values('SJ102', 'Spice Jet', 657.95);
+Query OK, 1 row affected (0.10 sec)
+mysql> insert into Aircraft values('DA103', 'Deccan Airlines', 1150.23);
+Query OK, 1 row affected (0.10 sec)
+mysql> insert into Aircraft values('JA104', 'Jet Airways', 1800.56);
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Aircraft values('IA105', 'Indian Airlines', 700.45);
+Query OK, 1 row affected (0.10 sec)
+mysql> insert into Aircraft values('SA106', 'Sahara', 2100.23);
+Query OK, 1 row affected (0.11 sec)
+mysql> select * from Aircraft;
++----------+----------------------+----------------------+
+| aid | aname | crushing_range |
++----------+----------------------+----------------------+
+| DA103 | Deccan Airlines | 1150.23 |
+| IA101 | Indian Airlines | 439.89 |
+| IA105 | Indian Airlines | 700.45 |
+| JA104 | Jet Airways | 1800.56 |
+| SA106 | Sahara | 2100.23 |
+| SJ102 | Spice Jet | 657.95 |
++----------+----------------------+----------------------+
+6 rows in set (0.00 sec)
+mysql> update Aircraft
+ -> set crushing_range = 3100
+ -> where aid = 'IA101';
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+mysql> select * from Aircraft;
++----------+----------------------+----------------------+
+| aid | aname | crushing_range |
++----------+----------------------+----------------------+
+| DA103 | Deccan Airlines | 1150.23 |
+| IA101 | Indian Airlines | 3100.00 |
+| IA105 | Indian Airlines | 700.45 |
+| JA104 | Jet Airways | 1800.56 |
+| SA106 | Sahara | 2100.23 |
+| SJ102 | Spice Jet | 657.95 |
++----------+----------------------+----------------------+
+6 rows in set (0.01 sec)
+mysql> update Aircraft
+ -> set crushing_range = 3200
+ -> where aid = 'IA105';
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+mysql> select * from Aircraft;
++----------+----------------------+----------------------+
+| aid | aname | crushing_range |
++----------+----------------------+----------------------+
+| DA103 | Deccan Airlines | 1150.23 |
+| IA101 | Indian Airlines | 3100.00 |
+| IA105 | Indian Airlines | 3200.00 |
+| JA104 | Jet Airways | 1800.56 |
+| SA106 | Sahara | 2100.23 |
+| SJ102 | Spice Jet | 657.95 |
++----------+----------------------+----------------------+
+6 rows in set (0.00 sec)
+mysql> insert into Aircraft values ("BO101", "BOYING101", 3005);
+Query OK, 1 row affected (0.07 sec)
+mysql> INSERT INTO Aircraft values('BO102', 'BOYING102', 270);
+Query OK, 1 row affected (0.13 sec)
+mysql> select * from Aircraft;
++----------+----------------------+----------------------+
+| aid | aname | crushing_range |
++----------+----------------------+----------------------+
+| BO101 | BOYING101 | 3005.00 |
+| BO102 | BOYING102 | 270.00 |
+| DA103 | Deccan Airlines | 1150.23 |
+| IA101 | Indian Airlines | 3100.00 |
+| IA105 | Indian Airlines | 3200.00 |
+| JA104 | Jet Airways | 1800.56 |
+| SA106 | Sahara | 2100.23 |
+| SJ102 | Spice Jet | 657.95 |
++----------+----------------------+----------------------+
+8 rows in set (0.00 sec)
+mysql> insert into Certified values('EM101', 'DA103');
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Certified values('EM107', 'IA101');
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Certified values('EM106', 'IA105');
+Query OK, 1 row affected (0.10 sec)
+mysql> insert into Certified values('EM110', 'JA104');
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Certified values('EM109', 'SA106');
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into Certified values('EM103', 'SJ102');
+Query OK, 1 row affected (0.10 sec)
+mysql> select * from Certified;
++-----------+----------+
+| eid | aid |
++-----------+----------+
+| EM101 | DA103 |
+| EM103 | SJ102 |
+| EM106 | IA105 |
+| EM107 | IA101 |
+| EM109 | SA106 |
+| EM110 | JA104 |
++-----------+----------+
+6 rows in set (0.00 sec)
+
+
+Queries
+
+
+(a) Identify the flights that can be piloted by every pilot whose salary more than Rs. 1,00,000 
+
+mysql> select a.aname
+ -> from Aircraft a, Certified c, Employees e
+ -> where a.aid = c.aid
+ -> and e.eid = c.eid
+ -> and e.salary > 100000;
++----------------------+
+| aname |
++----------------------+
+| Deccan Airlines |
+| Spice Jet |
+| Indian Airlines |
++----------------------+
+3 rows in set (0.00 sec)
+
+
+(b) List the names and salary of the employees whose salary is more than average salary. 
+
+mysql> select e.ename, e.salary
+ -> from Aircraft a, Certified c, Employees e
+ -> where a.aid = c.aid
+ -> and e.eid = c.eid
+ -> and exists (
+ -> select * from Employees e1
+ -> where e1.eid = e.eid
+ -> and e1.salary > (select avg(salary) from Employees));
++-----------------------------+-----------+
+| ename | salary |
++-----------------------------+-----------+
+| Noorain Aziza | 150000 |
+| Mouli Dutta | 160000 |
+| Preetha Chakraborty | 180000 |
++-----------------------------+-----------+
+3 rows in set (0.02 sec)
+
+
+(c) For all aircraft with the crushing range over 1000 miles, find the names of the aircraft and average salary for 
+pilots. 
+
+mysql> select a.aname, avg(salary)
+ -> from Aircraft a, Certified c, Employees e
+ -> where a.aid = c.aid
+ -> and e.eid = c.eid
+ -> and a.crushing_range > 1000
+ -> group by a.aname;
++----------------------+------------------+
+| aname | avg(salary) |
++----------------------+------------------+
+| Deccan Airlines | 150000.0000 |
+| Indian Airlines | 115000.0000 |
+| Sahara | 70000.0000 |
+| Jet Airways | 80000.0000 |
++---------------------+-------------------+
+4 rows in set (0.00 sec)
+
+
+(d) Find The names of pilots who can operate planes with a range greater than 3000 miles but not certified on any 
+‘BOYING’ aircraft.
+
+mysql> select e.ename
+ -> from Employees e, Aircraft a, Certified c
+ -> where e.eid = c.eid
+ -> and a.aid = c.aid
+ -> and exists (
+ -> select * from Aircraft a1
+ -> where a1.aid = a.aid
+ -> and a1.crushing_range > 3000
+ -> and a1.aname not like 'BOYING%');
++-----------------------------+
+| ename |
++-----------------------------+
+| Preetha Chakraborty |
+| Abir Poddar |
++-----------------------------+
+2 rows in set (0.00 sec)

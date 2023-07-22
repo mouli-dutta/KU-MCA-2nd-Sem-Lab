@@ -1,0 +1,241 @@
+Assignment 5 …
+3. Consider the following relational schema and solve the following queries.
+Customer(cust_id, cust_name, annual_revenue, cust_type) 
+Here cust_id is primary key
+Shipment(shipment_no, cust_id, weight, truck_no, destination, ship_date) 
+Here cust_id, weight, truck_no & destination are foreign key & shipment_no & cust_id together are 
+primary key
+Truck(truck_no, driver_name) 
+Here truck_no is primary key
+City(city_name, population) 
+Here city name is primary key
+Queries:
+(a) List all cities that have received shipments from every customer. 
+(b) Find the average weight of a shipment sent to height population city. 
+(c) List the name and annual_revenue of customers where shipments have been delivered by 
+truck driver 'Amiya'.
+(d) Which city in the database the smallest population.
+mysql> create database a5mouli;
+Query OK, 1 row affected (0.29 sec)
+mysql> show databases;
++------------------------------+
+| Database |
++------------------------------+
+| a5moul |
+| information_schema |
+| mysql |
+| performance_schema |
+| sakila |
+| sys |
+| world |
++------------------------------+
+7 rows in set (0.11 sec)
+mysql> use a5mouli;
+Database changed
+mysql> create table Customer
+ -> (cust_id varchar(8) primary key,
+ -> cust_name varchar(20),
+ -> annual_revenue decimal(10,2),
+ -> cust_type varchar(12));
+Query OK, 0 rows affected (0.40 sec)
+mysql> desc Customer;
++-----------------------+-------------------+-------+------+-----------+----------+
+| Field | Type | Null | Key | Default | Extra |
++-----------------------+-------------------+-------+------+-----------+----------+
+| cust_id | varchar(8) | NO | PRI | NULL | |
+| cust_name | varchar(20) | YES | | NULL | |
+| annual_revenue | decimal(10,2) | YES | | NULL | |
+| cust_type | varchar(12) | YES | | NULL | |
++-----------------------+-------------------+-------+------+----------+-----------+
+4 rows in set (0.01 sec)
+mysql> create table Truck
+ -> (truck_no varchar(20) primary key,
+ -> driver_name varchar(20));
+Query OK, 0 rows affected (0.04 sec)
+mysql> desc Truck;
++------------------+-----------------+-------+------+-----------+--------+
+| Field | Type | Null | Key | Default | Extra |
++------------------+-----------------+-------+------+-----------+--------+
+| truck_no | varchar(20) | NO | PRI | NULL | |
+| driver_name | varchar(20) | YES | | NULL | |
++------------------+-----------------+-------+------+-----------+--------+
+2 rows in set (0.00 sec)
+mysql> create table City
+ -> (city_name varchar(20) primary key,
+ -> population integer);
+Query OK, 0 rows affected (0.05 sec)
+mysql> desc City;
++----------------+----------------+-------+------+-----------+---------+
+| Field | Type | Null | Key | Default | Extra |
++----------------+----------------+-------+------+-----------+---------+
+| city_name | varchar(20) | NO | PRI | NULL | |
+| population | int | YES | | NULL | |
++----------------+-----------------+------+------+-----------+--------+
+2 rows in set (0.03 sec)
+mysql> create table Shipment
+ -> (spmt_no varchar(8),
+ -> cust_id varchar(8) references Customer,
+ -> weight integer,
+ -> truck_no varchar(8) references Truck,
+ -> destination varchar(20) references City,
+ -> ship_date Date,
+ -> primary key(spmt_no,cust_id));
+Query OK, 0 rows affected (0.05 sec)
+mysql> desc Shipment;
++----------------+-----------------+-------+------+-----------+--------+
+| Field | Type | Null | Key | Default | Extra |
++----------------+-----------------+-------+------+-----------+--------+
+| spmt_no | varchar(8) | NO | PRI | NULL | |
+| cust_id | varchar(8) | NO | PRI | NULL | |
+| weight | int | YES | | NULL | |
+| truck_no | varchar(8) | YES | | NULL | |
+| destination | varchar(20) | YES | | NULL | |
+| ship_date | date | YES | | NULL | |
++----------------+-----------------+-------+------+-----------+---------+
+6 rows in set (0.00 sec)
+mysql> insert into Customer VALUES ('Cust1','Mouli',100000,'Impulse');
+Query OK, 1 row affected (0.08 sec)
+mysql> insert into Customer VALUES ('Cust2','Noorain',90000.0,'Internal');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Customer VALUES ('Cust3','Ammrisha',80000.0,'External');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Customer VALUES ('Cust4','Maya',75000.0,'Internal');
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Customer VALUES ('Cust5','Preetha',85000.0,'External');
+Query OK, 1 row affected (0.00 sec)
+mysql> select *from Customer;
++-----------+----------------+-----------------------+--------------+
+| cust_id | cust_name | annual_revenue | cust_type |
++-----------+----------------+-----------------------+--------------+
+| Cust1 | Mouli | 100000.00 | Impulse |
+| Cust2 | Noorain | 90000.00 | Internal |
+| Cust3 | Ammrisha | 80000.00 | External |
+| Cust4 | Maya | 75000.00 | Internal |
+| Cust5 | Preetha | 85000.00 | External |
++-----------+---------------+------------------------+--------------+
+5 rows in set (0.00 sec)
+mysql> insert into City VALUES ('Kalyani',25000);
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into City VALUES ('Kolkata',75000);
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into City VALUES ('Hooghly',85000);
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into City VALUES ('Barasat',45000);
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into City VALUES ('Nadia',64251);
+Query OK, 1 row affected (0.00 sec)
+mysql> select *from City;
++---------------+----------------+
+| city_name | population |
++---------------+----------------+
+| Barasat | 45000 |
+| Hooghly | 85000 |
+| Kalyani | 25000 |
+| Kolkata | 75000 |
+| Nadia | 64251 |
++---------------+----------------+
+5 rows in set (0.00 sec)
+mysql> insert into Truck VALUES ('TRA1','AMIYA');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Truck VALUES ('TRA2','ABIR');
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into Truck VALUES ('TRA3','UTSAB');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Truck VALUES ('TRA4','ARITRA');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Truck VALUES ('TRA5','SUMAN');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Truck VALUES ('TRA6','ARNAB');
+Query OK, 1 row affected (0.03 sec)
+mysql> select *from Truck;
++-------------+-------------------+
+| truck_no | driver_name |
++-------------+-------------------+
+| TRA1 | AMIYA |
+| TRA2 | ABIR |
+| TRA3 | UTSAB |
+| TRA4 | ARITRA |
+| TRA5 | SUMAN |
+| TRA6 | ARNAB |
++-------------+-------------------+
+6 rows in set (0.00 sec)
+mysql> insert into Shipment VALUES ('SH1','Cust2',45,'TRA1','Kalyani','2000-01-13');
+Query OK, 1 row affected (0.08 sec)
+mysql> insert into Shipment VALUES ('SH2','Cust1',65,'TRA1','Kolkata','2008-05-12');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Shipment VALUES ('SH3','Cust4',74,'TRA6','Kalyani','2012-03-31');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Shipment VALUES ('SH4','Cust1',52,'TRA1','Kalyani','2000-01-13');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Shipment VALUES ('SH5','Cust1',68,'TRA5','Barasat','2022-05-19');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Shipment VALUES ('SH6','Cust3',45,'TRA3','Kalyani','2022-09-27');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Shipment VALUES ('SH6','Cust2',75,'TRA2','Hooghly','2022-12-12');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into Shipment VALUES ('SH7','Cust5',92,'TRA2','Kalyani','2022-12-12');
+Query OK, 1 row affected (0.00 sec)
+mysql> select *from Shipment;
++-------------+-----------+----------+--------------+----------------+-----------------+
+| spmt_no | cust_id | weight | truck_no | destination | ship_date |
++-------------+-----------+----------+--------------+----------------+-----------------+
+| SH1 | Cust2 | 45 | TRA1 | Kalyani | 2000-01-13 |
+| SH2 | Cust1 | 65 | TRA1 | Kolkata | 2008-05-12 |
+| SH3 | Cust4 | 74 | TRA6 | Kalyani | 2012-03-31 |
+| SH4 | Cust1 | 52 | TRA1 | Kalyani | 2000-01-13 |
+| SH5 | Cust1 | 68 | TRA5 | Barasat | 2022-05-19 |
+| SH6 | Cust2 | 75 | TRA2 | Hooghly | 2022-12-12 |
+| SH6 | Cust3 | 45 | TRA3 | Kalyani | 2022-09-27 |
+| SH7 | Cust5 | 92 | TRA2 | Kalyani | 2022-12-12 |
++-------------+-----------+----------+-------------+-----------------+-----------------+
+8 rows in set (0.00 sec)
+
+
+(a) List all cities that have received shipments from every customer.
+mysql> select destination from Shipment 
+ -> group by destination 
+ -> having count(distinct
+ -> cust_id) = (select count(cust_id)from customer);
++-----------------+
+| destination |
++-----------------+
+| Kalyani |
++-----------------+
+1 row in set (0.06 sec)
+
+(b) Find the average weight of a shipment sent to height population city.
+mysql> select avg(weight) from shipment s, city c 
+ -> where s.destination = c.city_name
+ -> and population = (select max(population) from city);
++-----------------+
+| avg(weight) |
++-----------------+
+| 75.0000 |
++-----------------+
+1 row in set (0.00 sec)
+
+(c) List the name and annual_revenue of customers where shipments have been delivered by truck driver 
+'Amiya'.
+mysql> select cust_name, annual_revenue from customer c, shipment s, truck t 
+ -> where c.cust_id = s.cust_id 
+ -> and s.truck_no = t.truck_no 
+ -> and driver_name = 'AMIYA';
++----------------+-----------------------+
+| cust_name | annual_revenue |
++----------------+-----------------------+
+| Noorain | 90000.00 |
+| Mouli | 100000.00 |
+| Mouli | 100000.00 |
++----------------+------------------------+
+3 rows in set (0.03 sec)
+
+(d) Which city in the database the smallest population?
+mysql> select city_name from city 
+ -> where population = (
+ -> select min(population) from city);
++---------------+
+| city_name |
++---------------+
+| Kalyani |
++---------------+
+1 row in set (0.00 sec)

@@ -1,0 +1,185 @@
+Assingment 3
+Question:
+Create the following relational tables: 
+SAILOR (sid, sname, rating, age) 
+BOATS (bid, bname, color) 
+RESERVES (sid, bid, day) 
+
+Queries : 
+(1) Find the name of sailors have reserved a red or a green boat. 
+(2) Find the sid of all sailors who have ‘Red’ boats but not ‘Green’ boats. 
+(3) Find the names of sailors who have boat no. = 103.
+(4) Find the color of the boats reserved by ‘XYZ’.
+
+
+mysql> create database A3mouli;
+Query OK, 1 row affected (0.11 sec)
+mysql> use A3mouli;
+Database changed
+mysql> create table SAILOR(
+ -> sid varchar(8) primary key,
+ -> sname varchar(20),
+ -> rating int,
+ -> age int);
+Query OK, 0 rows affected (0.66 sec)
+mysql> desc SAILOR;
++----------+-----------------+-------+-----+-----------+-------+
+| Field | Type | Null | Key| Default | Extra|
++----------+-----------------+-------+-----+-----------+-------+
+| sid | varchar(8) | NO | PRI | NULL | |
+| sname | varchar(20) | YES | | NULL | |
+| rating | int | YES | | NULL | |
+| age | int | YES | | NULL | |
++----------+-----------------+------+------+-----------+-------+
+4 rows in set (0.01 sec)
+mysql> create table BOATS(
+ -> bid int(5) primary key,
+ -> bname varchar(20),
+ -> color varchar(20));
+Query OK, 0 rows affected, 1 warning (0.42 sec)
+mysql> desc BOATS;
++-------+-------------+-------+------+------------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+-------------+-------+------+-----------+--------+
+| bid | int | NO | PRI | NULL | |
+| bname | varchar(20) | YES | | NULL | |
+| color | varchar(20) | YES | | NULL | |
++----------+-----------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+mysql> create table RESERVES(
+ -> sid varchar(8) references SAILOR(sid),
+ -> bid int(5) references BOATS(bid),
+ -> day date,
+ -> primary key(sid, bid));
+Query OK, 0 rows affected, 1 warning (1.02 sec)
+mysql> desc RESERVES;
++-------+---------------+-------+------+-----------+-------+
+| Field | Type | Null | Key | Default | Extra|
++-------+---------------+-------+------+-----------+-------+
+| sid | varchar(8) | NO | PRI | NULL | |
+| bid | int | NO | PRI | NULL | |
+| day | date | YES | | NULL | |
++-------+--------------+-------+------+-----------+--------+
+3 rows in set (0.00 sec)
+mysql> insert into SAILOR values('s1', 'DEF', 8, 38);
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into SAILOR values('s2', 'ABC', 5, 35);
+Query OK, 1 row affected (0.08 sec)
+mysql> insert into SAILOR values('s3', 'PQR', 6, 42);
+Query OK, 1 row affected (0.08 sec)
+mysql> insert into SAILOR values('s4', 'IOU', 6, 58);
+Query OK, 1 row affected (0.09 sec)
+mysql> insert into SAILOR values('s5', 'MNO', 9, 76);
+Query OK, 1 row affected (0.08 sec)
+mysql> insert into SAILOR values('s6', 'XYZ', 6, 46);
+Query OK, 1 row affected (0.08 sec)
+mysql> select * from SAILOR;
++-----+----------+---------+------+
+| sid | sname | rating | age |
++-----+----------+---------+------+
+| s1 | DEF | 8 | 38 |
+| s2 | ABC | 5 | 35 |
+| s3 | PQR | 6 | 42 |
+| s4 | IOU | 6 | 58 |
+| s5 | MNO | 9 | 76 |
+| s6 | XYZ | 6 | 46 |
++-----+----------+-------+------+
+6 rows in set (0.00 sec)
+
+mysql> insert into BOATS(101, 'Atlantis', 'Red');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your 
+MySQL server version for the right syntax to use near '101, 'Atlantis', 'Red')' at line 1
+mysql> insert into BOATS values(101, 'Atlantis', 'Red');
+Query OK, 1 row affected (0.08 sec)
+mysql> insert into BOATS values(102, 'Ariel', 'Blue');
+Query OK, 1 row affected (0.10 sec)
+mysql> insert into BOATS values(103, 'Albatross', 'Yellow');
+Query OK, 1 row affected (0.10 sec)
+mysql> insert into BOATS values(104, 'Zephyr', 'Green');
+Query OK, 1 row affected (0.12 sec)
+mysql> insert into BOATS values(105, 'Calypso', 'Green');
+Query OK, 1 row affected (0.07 sec)
+mysql> insert into BOATS values(106, 'Jolly Roger', 'Red');
+Query OK, 1 row affected (0.11 sec)
+mysql> insert into BOATS values(107, 'Aurora', 'Blue');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from BOATS;
++-----+----------------+----------+
+| bid | bname | color |
++-----+----------------+----------+
+| 101 | Atlantis | Red |
+| 102 | Ariel | Blue |
+| 103 | Albatross | Yellow |
+| 104 | Zephyr | Green |
+| 105 | Calypso | Green |
+| 106 | Jolly Roger | Red |
+| 107 | Aurora | Blue |
++-----+-----------------+----------+
+7 rows in set (0.00 sec)
+
+mysql> insert into RESERVES values('s1', 101, '2023-10-02');
+Query OK, 1 row affected (0.10 sec)
+mysql> insert into RESERVES values('s2', 102, '2022-11-02');
+Query OK, 1 row affected (0.12 sec)
+mysql> insert into RESERVES values('s3', 103, '2023-08-03');
+Query OK, 1 row affected (0.08 sec)
+mysql> insert into RESERVES values ('s4', 104, '2022-12-04');
+Query OK, 1 row affected (0.10 sec)
+mysql> insert into RESERVES values ('s5', 105, '2023-02-05');
+Query OK, 1 row affected (0.08 sec)
+mysql> insert into RESERVES values('s6', 106, '2023-01-07');
+Query OK, 1 row affected (0.10 sec)
+mysql> select * from RESERVES;
++-----+-----+------------------+
+| sid | bid | day |
++-----+-----+------------------+
+| s1 | 101 | 2023-10-02 |
+| s2 | 102 | 2022-11-02 |
+| s3 | 103 | 2023-08-03 |
+| s4 | 104 | 2022-12-04 |
+| s5 | 105 | 2023-02-05 |
+| s6 | 106 | 2023-01-07 |
++-----+-----+------------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT sname FROM SAILOR WHERE EXISTS (SELECT * FROM RESERVES WHERE sid = SAILOR.sid 
+AND bid IN (SELECT bid FROM BOATS WHERE color IN ('Red', 'Green')));
++----------+
+| sname |
++----------+
+| DEF |
+| IOU |
+| MNO |
+| XYZ |
++----------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT sid FROM RESERVES WHERE EXISTS (SELECT * FROM BOATS WHERE color = 'Red' AND bid 
+= RESERVES.bid) AND NOT EXISTS (SELECT * FROM BOATS WHERE color='Green' AND bid = 
+RESERVES.bid);
++-----+
+| sid |
++-----+
+| s1 |
+| s6 |
++-----+
+2 rows in set (0.00 sec)
+
+mysql> SELECT S.sname FROM SAILOR S, RESERVES R WHERE S.sid = R.sid AND R.bid = 103;
++----------+
+| sname |
++----------+
+| PQR |
++----------+
+1 row in set (0.01 sec)
+
+mysql> SELECT B.color FROM BOATS B, SAILOR S, RESERVES R WHERE B.bid = R.bid AND R.sid = S.sid 
+AND S.sname='XYZ';
++--------+
+| color |
++--------+
+| Red |
++--------+
+1 row in set (0.01 sec)
+mysql> 
