@@ -1,0 +1,199 @@
+\documentclass[a4paper, 12pt]{report}
+
+\usepackage[margin=2cm]{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+
+\title{Installing Python Packages Using Pip}
+\author{Mouli Dutta}
+\date{22-07-2023}
+
+\setlength{\parindent}{0pt}
+\renewcommand{\thesection}{\arabic{section}}
+
+\newcommand{\commandbox}[1]{%
+    \begin{tcolorbox}[colback=green!10, colframe=green!50!black, rounded corners]
+        #1
+    \end{tcolorbox}% 
+}
+
+\newcommand{\addimage}[4][]{%
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[#1]{#2}
+        \caption{#3}
+        \label{#4}
+    \end{figure}%
+}
+
+\begin{document}
+
+    \maketitle
+    \tableofcontents
+    \newpage
+
+    \section{Introduction}
+        Python is a powerful programming language widely used in various domains, including web development, data analysis, machine learning, and more. To extend the functionality of Python, developers often use external libraries or packages. One of the most popular package managers for Python is Pip.
+
+        This document aims to guide you through the process of installing Python packages using Pip, from installing Pip itself to managing packages efficiently.
+
+    
+    \section{What is Pip?}
+        \textbf{Pip} is a package manager for Python that allows users to install, upgrade, and remove Python packages effortlessly. It simplifies the process of handling dependencies and ensures that the required packages are readily available.
+
+        
+    \section{Prerequisites}
+        Before you begin, ensure you have the following prerequisites:
+        \begin{itemize}
+            \item A working Python installation (Python 3.x recommended)
+            \item Internet connectivity to access the Python Package Index (PyPI) and download packages
+        \end{itemize}
+
+
+    \section{Installing Python}
+        If you don't have Python installed, follow the official Python installation guide for your operating system:
+        \begin{itemize}
+            \item \href{https://www.python.org/downloads/}{Python Official Website}
+        \end{itemize}
+
+        \addimage[width=0.8\textwidth]{pythonwebsite.png}{\href{https://www.python.org/downloads/}{Official website to download python}}{fig:python website}
+
+    \newpage
+
+    
+    \section{Installing Pip}
+        In most cases, Python comes with Pip pre-installed. However, if you need to install Pip manually, you can do so by following the instructions for your operating system:\\
+
+        \textbf{Windows:}
+
+        \addimage[width=0.8\textwidth]{PipOnWindows.jpeg}{\href{https://th.bing.com/th/id/OIP.PbcC89a1KSoYHLKVORN7ogAAAA?pid=ImgDet&rs=1}{How to install Pip on Windows}}{fig:install pip on windows}
+        
+        \begin{enumerate}        
+            \item Download the \href{https://bootstrap.pypa.io/get-pip.py}{get-pip.py} script.
+            \item Open a command prompt with administrator privileges.
+            \item Navigate to the directory containing the downloaded \textbf{`get-pip.py'}.
+            \item Run the following command:
+            \commandbox{\texttt{python get-pip.py}}
+            
+        \end{enumerate}
+
+        \addimage[width=0.8\textwidth]{getPip.png}{\href{https://www.jesusninoc.com/wp-content/uploads/2017/07/Installing-pip-with-get-pip-py.png}{Install Pip on Windows using get-pip}}{fig:Windows get-pip}
+
+        \newpage
+
+        \textbf{macOS:}
+            \begin{enumerate}
+                \item Open a terminal.
+                \item Run the following command:
+                \commandbox{\texttt{curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py}}
+            \end{enumerate}
+
+        \addimage[width=0.8\textwidth]{getPipMac.png}{\href{https://phoenixnap.com/kb/wp-content/uploads/2021/09/install-pip-via-get-pip-py.png}{Install Pip on macOS using get-pip}}{fig:macOS get-pip}
+        
+        \textbf{Linux:}
+            \begin{enumerate}
+                \item Open a terminal.
+                \item Run the following command:
+                \commandbox{\texttt{sudo python get-pip.py}}
+            \end{enumerate}
+
+        \addimage[width=0.8\textwidth]{getPipLinux.jpg}{\href{https://linuxhint.com/wp-content/uploads/2020/09/word-image-619-768x358.png}{How to install Pip on Linux}}{fig:Linux get-pip}
+
+        Now that you have Pip installed, you can use it to manage Python packages.
+
+
+    \newpage
+    
+    
+    \section{Installing Python Packages Using Pip}
+    
+        \subsection{Installing a Package}
+        
+            To install a Python package, use the \textbf{`pip install'} command followed by the package name:
+            \commandbox{\texttt{pip install package\_name}}
+
+            Replace \textbf{`package\_name'} with the name of the package you want to install. For example, to install the \textbf{`requests'} package, run:
+            \commandbox{\texttt{pip install requests}}
+    
+        \subsection{Specifying Package Versions}
+        
+            You can also specify the version of a package you want to install:
+            \commandbox{\texttt{pip install package\_name == version\_number}}
+
+            For example, to install version 2.6.0 of the \textbf{`numpy'} package, run:
+            \commandbox{\texttt{pip install numpy == 2.6.0}}
+
+
+        \subsection{Installing from Requirements Files}
+            Requirements files are text files that list the packages and their versions required for a project. To install packages from a requirements file, create a \textbf{`requirements.txt'} file and run:
+            \commandbox{\texttt{pip install -r requirements.txt}}
+            
+        \subsection{Upgrading Packages}
+            To upgrade a package to the latest version, use the \textbf{`--upgrade'} flag:
+            \commandbox{\texttt{pip install --upgrade package\_name}}
+            
+        \subsection{Uninstalling Packages}
+            If you want to remove a package, use the \textbf{`uninstall'} command:
+            \commandbox{\texttt{pip uninstall package\_name}}
+    
+    \newpage
+
+    
+    \section{Common Pip Commands}
+        Here are some common Pip commands for managing packages:
+
+        \begin{tcolorbox}[colback=white, colframe=black, rounded corners]
+        \small
+        \begin{tabular}{c|c}
+        
+             \\[2pt] \textbf{Command} & \textbf{Description} \\[15pt]
+             \hline
+             
+             \\[1pt] \textbf{`pip list'} & List installed packages \\[10pt]
+             \hline
+             
+             \\[1pt]\textbf{`pip show package\_name'} & Show information about a specific package \\[10pt]
+             \hline
+
+             \\[1pt]\textbf{`pip search search\_query'} & Show information about a specific package \\[10pt]
+             \hline
+
+             \\[1pt]\textbf{`pip freeze $>$ requirements.txt'} & Save a list of installed packages to a file \\[10pt]
+             \hline
+
+             \\[1pt] \textbf{`pip check'} & Verify installed packages have compatible dependencies \\[10pt]
+             \hline
+             
+             \\[1pt] \textbf{`pip help'} & Get help about Pip commands \\[10pt]
+             
+        \end{tabular}
+        \end{tcolorbox}
+
+    
+    \section{Troubleshooting}
+        If you encounter any issues during installation or while using Pip, check the following:
+        
+        \begin{itemize}
+            \item Ensure you have a stable internet connection.
+            \item Verify that Python and Pip are correctly installed.
+            \item Check if there are any typos in the package names or commands.
+            \item Refer to the official \href{https://pip.pypa.io/en/stable/}{Pip documentation} for troubleshooting tips.
+        \end{itemize}
+    
+    \section{Conclusion}
+        Congratulations! You have learned how to install Python packages using Pip. Pip simplifies the process of managing dependencies, allowing you to focus on building amazing Python projects with the help of external libraries.
+
+    \newpage
+    
+    \section{Bibliography}
+        \begin{itemize}
+            \item \href{https://www.python.org}{Python Official Website}
+            \item \href{https://pip.pypa.io/en/stable/}{Pip Documentation}
+            \item \href{https://pypi.org/}{Python Package Index (PyPI)}
+            \item \href{https://chat.openai.com/}{ChatGPT}
+        \end{itemize}
+
+
+\end{document}
+
