@@ -4,7 +4,7 @@
 #define E 0.00001
 
 float f(float x) {
-    return x*x*x - 4*x - 9;
+    return x*x*x - 4*x + 1;
 }
 
 float bisection(float a, float b) {

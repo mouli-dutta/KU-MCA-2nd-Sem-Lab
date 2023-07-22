@@ -1,0 +1,15 @@
+Item Name: Item 1
+Item ID: 1
+Total no. of items: 10
+Item cost: 5.99
+Total cost: 50
+Item Name: Item 2
+Item ID: 2
+Total no. of items: 5
+Item cost: 9.99
+Total cost: 90
+Item Name: Item 3
+Item ID: 3
+Total no. of items: 2
+Item cost: 14.99
+Total cost: 127

@@ -3,7 +3,7 @@
 
 double f(double x) {
     // Define the function whose roots we want to find
-    return x*x - 3*x - 10;
+    return x*x*x - 4*x + 1;
 }
 
 double regular_falsi(double a, double b, double tol) {

@@ -5,8 +5,8 @@ using namespace std;
 
 class Matrix {
 private:
-    int row;
-    int col;
+    int rows;
+    int cols;
     double **matrix;
 
 public:
@@ -21,7 +21,7 @@ public:
     double determinant();
     Matrix inverse();
     Matrix transpose();
-    void printMatrix();
+    void display();
 };
 
 
@@ -64,59 +64,59 @@ int main() {
         case 1: {
             cout << "Enter details for Matrix A:\n";
             Matrix A = init();
-            A.printMatrix();
+            A.display();
 
             cout << "Enter details for Matrix B:\n";
             Matrix B = init();
-            B.printMatrix();
+            B.display();
 
             cout << "A + B =\n"; 
-            A.add(B).printMatrix();
+            A.add(B).display();
 
             break;
         }
         case 2:{
             cout << "Enter details for Matrix A:\n";
             Matrix A = init();
-            A.printMatrix();
+            A.display();
 
             cout << "Enter details for Matrix B:\n";
             Matrix B = init();
-            B.printMatrix();
+            B.display();
 
             cout << "A - B =\n";
-            A.subtract(B).printMatrix();
+            A.subtract(B).display();
 
             break;
         }
         case 3:{
             cout << "Enter details for Matrix A:\n";
             Matrix A = init();
-            A.printMatrix();
+            A.display();
 
             cout << "Enter details for Matrix B:\n";
             Matrix B = init();
-            B.printMatrix();
+            B.display();
 
             cout << "A x B =\n";
-            A.multiply(B).printMatrix();
+            A.multiply(B).display();
 
             break;
         }
         case 4:{
             cout << "Enter details for Matrix A:\n";
             Matrix A = init();
-            A.printMatrix();
+            A.display();
 
             cout << "Inverse of the matrix is:\n";
-            A.inverse().printMatrix();
+            A.inverse().display();
 
             break;
         }
         case 5:{
             cout << "Enter details for Matrix A:\n";
             Matrix A = init();
-            A.printMatrix();
+            A.display();
 
             cout << "Determinant of the matrix is:\n" 
                  << A.determinant() << "\n";
@@ -142,7 +142,7 @@ int main() {
 
 // Implementation of Matrix class
 
-Matrix::Matrix(int row, int col) : row(row), col(col)
+Matrix::Matrix(int row, int col) : rows(row), cols(col)
 {
     // Allocate memory for the matrix
     matrix = new double*[row];
@@ -151,12 +151,12 @@ Matrix::Matrix(int row, int col) : row(row), col(col)
     }
 }
 
-Matrix::Matrix(const Matrix& copy) : row(copy.row), col(copy.col)
+Matrix::Matrix(const Matrix& copy) : rows(copy.rows), cols(copy.cols)
 {
-    matrix = new double*[row];
-    for (int i = 0; i < row; ++i) {
-        matrix[i] = new double[col];
-        for (int j = 0; j < col; ++j) {
+    matrix = new double*[rows];
+    for (int i = 0; i < rows; ++i) {
+        matrix[i] = new double[cols];
+        for (int j = 0; j < cols; ++j) {
             matrix[i][j] = copy.matrix[i][j];
         }
     }
@@ -165,7 +165,7 @@ Matrix::Matrix(const Matrix& copy) : row(copy.row), col(copy.col)
 Matrix::~Matrix()
 {
     // Deallocate memory for the matrix
-    for (int i = 0; i < row; ++i) {
+    for (int i = 0; i < rows; ++i) {
         delete[] matrix[i];
     }
     delete[] matrix;
@@ -175,8 +175,8 @@ void Matrix::fill(function<double()> fillFunction)
 {
     // fill the matrix according to the logic of the 
     // provided fillFunction
-    for(int i = 0; i < row; ++i) {
-        for(int j = 0; j < col; ++j) {
+    for(int i = 0; i < rows; ++i) {
+        for(int j = 0; j < cols; ++j) {
             matrix[i][j] = fillFunction();
         }
     }
@@ -184,7 +184,7 @@ void Matrix::fill(function<double()> fillFunction)
 
 Matrix Matrix::add(const Matrix& other)
 {
-    if((row != other.row) || (col != other.col)) {
+    if((rows != other.rows) || (cols != other.cols)) {
         cout << "Matrix addition is not possible.\n"
              << "Row and columns of both matrices must be same.\n";
         return Matrix(0, 0);
@@ -193,8 +193,8 @@ Matrix Matrix::add(const Matrix& other)
     else {
         Matrix res(other);
 
-        for(int i = 0; i < row; ++i) {
-            for(int j = 0; j < col; ++j) {
+        for(int i = 0; i < rows; ++i) {
+            for(int j = 0; j < cols; ++j) {
                 res.matrix[i][j] += matrix[i][j];
             }
         }
@@ -205,7 +205,7 @@ Matrix Matrix::add(const Matrix& other)
 
 Matrix Matrix::subtract(const Matrix& other)
 {
-    if((row != other.row) || (col != other.col)) {
+    if((rows != other.rows) || (cols != other.cols)) {
         cout << "Matrix subtraction is not possible.\n"
              << "Row and columns of both matrices must be same.\n";
         return Matrix(0, 0);
@@ -214,8 +214,8 @@ Matrix Matrix::subtract(const Matrix& other)
     else {
         Matrix res(other);
 
-        for(int i = 0; i < row; ++i) {
-            for(int j = 0; j < col; ++j) {
+        for(int i = 0; i < rows; ++i) {
+            for(int j = 0; j < cols; ++j) {
                 res.matrix[i][j] -= matrix[i][j];
             }
         }
@@ -226,18 +226,18 @@ Matrix Matrix::subtract(const Matrix& other)
 
 Matrix Matrix::multiply(const Matrix& other)
 {
-    if(other.row != col) {
+    if(other.rows != cols) {
         cout << "Matrix multiplication is not possible.\n"
              << "Column of the first matrix must be equal to row of the second matrix.\n";
         return Matrix(0, 0);
     }
 
     else {
-        Matrix res(row, other.col);
+        Matrix res(rows, other.cols);
 
-        for(int i = 0; i < res.row; ++i) {
-            for(int j = 0; j < res.col; ++j) {
-                for(int k = 0; k < col; ++k) {
+        for(int i = 0; i < res.rows; ++i) {
+            for(int j = 0; j < res.cols; ++j) {
+                for(int k = 0; k < cols; ++k) {
                     res.matrix[i][j] += matrix[i][k] * other.matrix[k][j];
                 }
             }
@@ -249,25 +249,25 @@ Matrix Matrix::multiply(const Matrix& other)
 
 double Matrix::determinant()
 {
-    if(row != col) {
+    if(rows != cols) {
         cout << "Can't calculate the determinant because the matrix is not square.\n";
         return 0.0;
     }
 
-    if(row == 1) {
+    if(rows == 1) {
         return matrix[0][0];
 
-    } else if (row == 2) {
+    } else if (rows == 2) {
         return (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0]);
 
     } else {
         double det = 0.0;
-        for(int j = 0; j < col; ++j) {
-            Matrix submatrix(row-1, col-1);
+        for(int j = 0; j < cols; ++j) {
+            Matrix submatrix(rows-1, cols-1);
 
-            for(int i = 1; i < row; ++i) {
+            for(int i = 1; i < rows; ++i) {
                 int k = 0;
-                for(int l = 0; l < col; ++l) {
+                for(int l = 0; l < cols; ++l) {
                     if(l != j) {
                         submatrix.matrix[i-1][k] = matrix[i][l];
                         k++;
@@ -285,22 +285,22 @@ double Matrix::determinant()
 
 Matrix Matrix::inverse()
 {
-    if (row != col) {
+    if (rows != cols) {
         cout << "Matrix is not square. Inverse does not exist.\n";
         return Matrix(0, 0);
     }
 
     // augmented matrix [A | I] where A is the original matrix and I is the identity matrix
-    Matrix augmented(row, col * 2);
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
+    Matrix augmented(rows, cols * 2);
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
             augmented.matrix[i][j] = matrix[i][j];
-            augmented.matrix[i][j + col] = (i == j) ? 1.0 : 0.0;
+            augmented.matrix[i][j + cols] = (i == j) ? 1.0 : 0.0;
         }
     }
 
     // Apply Gauss-Jordan elimination to transform the augmented matrix into [I | A^-1]
-    for (int i = 0; i < row; ++i) {
+    for (int i = 0; i < rows; ++i) {
         // Find the pivot element
         double pivot = augmented.matrix[i][i];
         if (pivot == 0.0) {
@@ -309,15 +309,15 @@ Matrix Matrix::inverse()
         }
 
         // Scale the pivot row to make the pivot element 1
-        for (int j = 0; j < col * 2; ++j) {
+        for (int j = 0; j < cols * 2; ++j) {
             augmented.matrix[i][j] /= pivot;
         }
 
         // Eliminate other rows
-        for (int k = 0; k < row; ++k) {
+        for (int k = 0; k < rows; ++k) {
             if (k != i) {
                 double factor = augmented.matrix[k][i];
-                for (int j = 0; j < col * 2; j++) {
+                for (int j = 0; j < cols * 2; j++) {
                     augmented.matrix[k][j] -= factor * augmented.matrix[i][j];
                 }
             }
@@ -325,10 +325,10 @@ Matrix Matrix::inverse()
     }
 
     // Extract the inverse matrix from the augmented matrix
-    Matrix inverse(row, col);
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            inverse.matrix[i][j] = augmented.matrix[i][j + col];
+    Matrix inverse(rows, cols);
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            inverse.matrix[i][j] = augmented.matrix[i][j + cols];
         }
     }
 
@@ -337,19 +337,19 @@ Matrix Matrix::inverse()
 
 Matrix Matrix::transpose()
 {
-    Matrix t(col, row);
-    for(int i = 0; i < row; ++i) {
-        for(int j = 0; j < col; ++j) {
+    Matrix t(cols, rows);
+    for(int i = 0; i < rows; ++i) {
+        for(int j = 0; j < cols; ++j) {
             t.matrix[j][i] = matrix[i][j];
         }
     }
     return t;
 }
 
-void Matrix::printMatrix()
+void Matrix::display()
 {
-    for(int i = 0; i < row; ++i) {
-        for(int j = 0; j < col; ++j) {
+    for(int i = 0; i < rows; ++i) {
+        for(int j = 0; j < cols; ++j) {
             cout << matrix[i][j] << "    ";
         }
         cout << "\n";

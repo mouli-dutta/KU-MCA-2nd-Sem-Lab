@@ -112,12 +112,12 @@ void printPoly(Poly *eqn) {
 
 // given function
 double f(double x) {
-    return x*x + 5*x - 2;
+    return x*x*x - 4*x + 1;
 }
 
 // derivative of the function
 double df(double x) {
-    return 2*x + 5;
+    return 3*x*x - 4;
 }
 
 double newton(double x) {
