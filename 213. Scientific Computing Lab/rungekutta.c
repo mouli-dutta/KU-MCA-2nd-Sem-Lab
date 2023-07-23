@@ -1,3 +1,5 @@
+// C program to implement Runge-Kutta 2nd order method
+
 #include <stdio.h>
 
 // A sample differential equation
@@ -29,22 +31,15 @@ float rungeKutta(float x0, float y0, float x, float h)
 		// Update next value of x
 		x0 = x0 + h;
 	}
+
 	return y;
 }
 
 // Driver Code
 int main()
 {
-	float x0, y0, x, h;
-	printf("Enter the value of x0.\n");
-scanf("%f", &x0);
-printf("Enter the value of y0.\n");
-scanf("%f", &y0);
-printf("Enter the value of x.\n");
-scanf("%f", &x);
-printf("Enter the value of h.\n");
-scanf("%f", &h);
+	float x0 = 0, y = 1, x = 0.25, h = 0.25;
 
-	printf("\nThe value of y at x is : %f\n",  rungeKutta(x0, y0, x, h));
+	printf("y(x) = %f\n", rungeKutta(x0, y, x, h));
 	return 0;
 }
